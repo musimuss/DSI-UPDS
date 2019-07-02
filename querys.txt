@@ -1,0 +1,51 @@
+Select * from tbpersona;
+Select * from tbfraterno;
+
+select * from tbpersona inner join tbusuario on tbpersona.id = tbusuario.id;
+select * from tbpersona inner join tbfraterno on tbpersona.id = tbfraterno.id;
+
+SELECT COUNT(*) FROM tbfraterno WHERE estado IN (SELECT estado FROM tbfraterno GROUP BY estado HAVING COUNT(*)<2);
+
+SELECT estado, COUNT(*) FROM tbfraterno GROUP BY estado HAVING COUNT(*)>1;
+
+
+CREATE TABLE tbasistencia(
+	id INT PRIMARY KEY IDENTITY(1,1),
+	id_fraterno INT,
+	fecha DATE,
+	FOREIGN KEY (id_fraterno) REFERENCES tbfraterno(id)
+);
+SELECT * FROM tbasistencia;
+
+SELECT COUNT(*) FROM tbasistencia WHERE id_fraterno=4 AND fecha='2019-07-01';
+
+SELECT * FROM tbasistencia t1
+	INNER JOIN tbfraterno t2 ON t1.id_fraterno=t2.id
+	INNER JOIN tbpersona t3 ON t2.id=t3.id
+WHERE t1.fecha='2019-07-01'
+ORDER BY t1.id;
+
+CREATE TABLE tbmedida(
+	id INT PRIMARY KEY IDENTITY(1,1),
+	id_fraterno INT,
+	torso DECIMAL(18,2),
+	cintura DECIMAL(18,2),
+	brazos DECIMAL(18,2),
+	piernas DECIMAL(18,2),
+	zapato DECIMAL(18,2),
+	cabeza DECIMAL(18,2),
+	FOREIGN KEY (id_fraterno) REFERENCES tbfraterno(id)
+);
+
+SELECT * FROM tbmedida;
+
+CREATE TABLE tbpago(	
+	id INT PRIMARY KEY IDENTITY(1,1),
+	id_fraterno INT,
+	fecha DATE,
+	acuenta DECIMAL(18,2),
+	saldo DECIMAL(18,2),
+	FOREIGN KEY (id_fraterno) REFERENCES tbfraterno(id)
+);
+
+DROP TABLE tbpago;
